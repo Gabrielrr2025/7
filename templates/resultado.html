@@ -1,12 +1,51 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
-    <title>Resultado da Leitura</title>
+  <meta charset="UTF-8">
+  <title>Resultado da Análise</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-    <h1>Informações da Carteira</h1>
-    <p><strong>Nome do Fundo:</strong> {{ nome_fundo }}</p>
-    <p><strong>CNPJ:</strong> {{ cnpj }}</p>
-    <p><strong>Patrimônio Líquido:</strong> {{ pl }}</p>
+<body class="bg-light">
+  <div class="container mt-5">
+    <div class="card shadow p-4">
+      <h2 class="mb-4">Resultado da Análise</h2>
+
+      <h5><strong>Nome do Fundo:</strong> {{ nome_fundo }}</h5>
+      <h5><strong>CNPJ:</strong> {{ cnpj_fundo }}</h5>
+      <h5><strong>Patrimônio Líquido:</strong> R$ {{ "{:,.2f}".format(pl_total) }}</h5>
+      <h5><strong>Rentabilidade Mensal:</strong> {{ rent_mensal }}%</h5>
+      <h5><strong>Rentabilidade Anual:</strong> {{ rent_anual }}%</h5>
+
+      <hr>
+
+      <h5 class="mb-3">Carteira:</h5>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>Nome do Ativo</th>
+              <th>Tipo de Ativo</th>
+              <th>Quantidade</th>
+              <th>Valor de Mercado</th>
+              <th>% do PL</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for _, row in df.iterrows() %}
+              <tr>
+                <td>{{ row['Nome do Ativo'] }}</td>
+                <td>{{ row['Tipo de Ativo'] }}</td>
+                <td>{{ row['Quantidade'] }}</td>
+                <td>R$ {{ "{:,.2f}".format(row['Valor de Mercado']) }}</td>
+                <td>{{ "{:.2f}".format(row['% PL']) }}%</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <a href="{{ url_for('index') }}" class="btn btn-secondary mt-3">Voltar</a>
+    </div>
+  </div>
 </body>
 </html>
